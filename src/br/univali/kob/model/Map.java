@@ -34,7 +34,8 @@ public class Map<K, V> {
         // Check if key is already present
         while (head != null) {
             if (head.getKey().equals(key)) { // find group
-                head.setValue(value);
+                Hash<K, V> next = new Hash<>(key, value);
+                head.setNext(next);
                 return;
             }
             head = head.getNext();
@@ -103,6 +104,19 @@ public class Map<K, V> {
      * Print the Map.
      */
     public void print() {
+        for (Hash<K, V> hash : this.chains) {
+            if (hash != null) {
+                Hash<K, V> next = hash.getNext();
+                System.out.print("[Key -> " + hash.getKey() + "]" + " / [Value -> " + hash.getValue());
+                while (next != null) {
+                    System.out.print(", ");
+                    System.out.print("Value -> " + next.getValue());
+                    next = next.getNext();
+                }
+                System.out.print("]");
+                System.out.println();
+            }
+        }
 
     }
 

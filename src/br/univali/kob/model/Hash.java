@@ -52,6 +52,13 @@ public class Hash<K, V> {
      */
     public void setNext(Hash<K, V> next) {this.next = next; }
 
+    /**
+     * Print hash.
+     */
+    public void print() {
+        System.out.println("[Key -> " + this.key + "]" + " / [Value -> " + this.value + "]");
+    }
+
     @Override
     public String toString() {
         return "Hash{" +
