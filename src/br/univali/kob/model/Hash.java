@@ -56,7 +56,7 @@ public class Hash<K, V> {
      * Print hash.
      */
     public void print() {
-        System.out.println("[Key -> " + this.key + "]" + " / [Value -> " + this.value + "]");
+        System.out.print("[Key -> " + this.key + "]" + " / [Value -> " + this.value);
     }
 
     @Override

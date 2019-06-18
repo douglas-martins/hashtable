@@ -2,6 +2,7 @@ package br.univali.kob.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class to represent a object of Map.
@@ -19,7 +20,7 @@ public class Map<K, V> {
      * Check if the Map is empty or not
      * @return boolean with true if the Map is empty and false if not.
      */
-    public boolean isEmpty() { return (this.chains.size() <= 0); }
+    public boolean isEmpty() { return (this.chains == null); }
 
     /**
      * Insert a object on the Key group on the Map.
@@ -34,8 +35,7 @@ public class Map<K, V> {
         // Check if key is already present
         while (head != null) {
             if (head.getKey().equals(key)) { // find group
-                Hash<K, V> next = new Hash<>(key, value);
-                head.setNext(next);
+                setKeyValueOnChain(key, value, head);
                 return;
             }
             head = head.getNext();
@@ -85,14 +85,14 @@ public class Map<K, V> {
     /**
      * Get the value for the given key.
      * @param key: K with the value o key for the Object value that will be returned
-     * @return V value of the Object for the K key passed.
+     * @return Hash<K, V> value of the Object for the K key passed.
      */
-    public V get(K key) {
+    public Hash<K, V> get(K key) {
         int group = hash(key);
         Hash<K, V> head = this.chains.get(group);
 
         while (head != null) {
-            if (head.getKey().equals(key)) { return head.getValue(); }
+            if (head.getKey().equals(key)) { return head; }
             head = head.getNext();
         }
 
@@ -107,9 +107,9 @@ public class Map<K, V> {
         for (Hash<K, V> hash : this.chains) {
             if (hash != null) {
                 Hash<K, V> next = hash.getNext();
-                System.out.print("[Key -> " + hash.getKey() + "]" + " / [Value -> " + hash.getValue());
+                hash.print();
                 while (next != null) {
-                    System.out.print(", ");
+                    System.out.print(" => ");
                     System.out.print("Value -> " + next.getValue());
                     next = next.getNext();
                 }
@@ -117,7 +117,6 @@ public class Map<K, V> {
                 System.out.println();
             }
         }
-
     }
 
     private void initChains() {
@@ -134,7 +133,13 @@ public class Map<K, V> {
         return hashCode % this.chains.size();
     }
 
-    private void checkLoadFactor() {
-
+    private void setKeyValueOnChain(K key, V value, Hash<K, V> head) {
+        Hash<K, V> insideHash = head;
+        Hash<K, V> previous = null;
+        while (insideHash != null) {
+            previous = insideHash;
+            insideHash = insideHash.getNext();
+        }
+        Objects.requireNonNull(previous).setNext(new Hash<>(key, value));
     }
 }
